@@ -1,16 +1,29 @@
 <h1>First Virtual Hosting Test Production Domain</h1>
 
 <?php
-public function getData(){
-    $conn = new PDO('mysql:host=localhost; dbname=phpless_production', 'root', 'ci23845ebP?');
-    $statement = $conn->prepare("SELECT name FROM country;");
-    $statement->execute();
-    return $statement->fetchAll(PDO::FETCH_ASSOC);
+
+$url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+
+if(strpos($url, 'beta') !== false){
+	$database = "phpless_staging";
+	echo "Database: staging. <br>";
+} else {
+	$database = "phpless_production";
+	echo "Database: production. <br>";
 }
 
-$data = getData();
+$conn = new PDO('mysql:host=localhost;dbname='.$database.'','root', 'ci23845ebP?');
+if($conn == false){
+    echo "error: connectie mislukt";
+}
+$statement = $conn->prepare("SELECT name FROM country;");
+$statement->execute();
+$data = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 foreach ($data as $country){
-    echo $country;
+    echo $country[name];
+echo "<br>";
 }
+
 ?>
