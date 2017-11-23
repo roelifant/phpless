@@ -1,14 +1,14 @@
-<h1>First Virtual Hosting Test Production Domain</h1>
-
 <?php
 
 $url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 
 if(strpos($url, 'beta') !== false){
+	echo "<h1>First Virtual Hosting Test Staging Domain</h1>";
 	$database = "phpless_staging";
 	echo "Database: staging. <br>";
 } else {
+	echo "<h1>First Virtual Hosting Test Production Domain</h1>";
 	$database = "phpless_production";
 	echo "Database: production. <br>";
 }
